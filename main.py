@@ -5,22 +5,16 @@ from player import Player
 def main():
     # Cria otraço de baralho
     traco = Traco()
-    traco.deletar_carta(6)
+    # traco.deletar_carta(6)
 
     # Cria a mão de baralho
     player1 = Player()
-    player1.cards_in_hands()
-
     player2 = Player()
-    player2.cards_in_hands()
-
     player3 = Player()
-    player3.cards_in_hands()
-
     player4 = Player()
-    player4.cards_in_hands()
 
-    print('************* ',len(traco._criar_baralho()))
+
+    # print('************* ',len(traco._criar_baralho()))
     
 
 

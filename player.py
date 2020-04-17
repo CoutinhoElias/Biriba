@@ -101,12 +101,12 @@ from traco import Traco
 import random
 
 class Player:
+    def __init__(self):
+        self.cards_in_hands = []
+        self.cards_in_hands.extend(self._cards_in_hands())
 
-    def cards_in_hands(self):
+    def _cards_in_hands(self):
         traco = Traco()
-        # traco.deletar_carta(6)
-        # lista_carta = traco._criar_baralho()
-        # print(lista_carta)
 
         list_cards_in_hands = []
 
@@ -114,9 +114,9 @@ class Player:
             carta = random.choice(traco._criar_baralho())
             pos = traco._criar_baralho().index(carta)
             list_cards_in_hands.append(carta)
-            traco.deletar_carta(pos)  
-
-        print(f'Para esse jogador temos {len(list_cards_in_hands)} cartas.')     
+            traco.deletar_carta(pos)
+        
+        return list_cards_in_hands  
 
     def checkBag(self):
         catch_trash = False
