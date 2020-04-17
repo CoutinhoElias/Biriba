@@ -2,9 +2,11 @@ import random
 from traco import Traco
 from player import Player
 
+# traco = Traco()
+
 def main():
     # Cria otraço de baralho
-    traco = Traco()
+    
     # traco.deletar_carta(6)
 
     # Cria a mão de baralho
