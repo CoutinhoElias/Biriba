@@ -1,3 +1,4 @@
+import pdb #import pdb for debugging
 class Traco:
     # Élysson MR
     def __init__(self):
@@ -19,6 +20,9 @@ class Traco:
         return list_baralho
 
     def deletar_carta(self, pos):
+        if pos > len(self.cartas_do_jogo):
+            # pdb.set_trace() #breakpoint
+            print('**********   Esse indice não existe   **********')
         if pos >= 0:
             del(self.cartas_do_jogo[pos])
         print(f'Removido o item da posição {pos}. Agora temos {len(self.cartas_do_jogo)} cartas.')

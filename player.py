@@ -99,6 +99,7 @@
 """
 from traco import Traco
 import random
+import pdb #import pdb for debugging
 
 traco = Traco()
 
@@ -110,11 +111,12 @@ class Player:
     def _cards_in_hands(self):
 
         list_cards_in_hands = []
+        # pdb.set_trace() #breakpoint
 
         for i in range(15):
-            carta = random.choice(traco._criar_baralho())
-            pos = traco._criar_baralho().index(carta)
-            print('traco._criar_baralho() possui ',len(traco._criar_baralho()), 'cartas e a Carta escolhida ', carta, 'na posição ', traco._criar_baralho().index(carta))
+            carta = random.choice(traco.cartas_do_jogo)
+            pos = traco.cartas_do_jogo.index(carta)
+            # print('traco._criar_baralho() possui ',len(traco._criar_baralho()), 'cartas e a Carta escolhida ', carta, 'na posição ', traco._criar_baralho().index(carta))
             list_cards_in_hands.append(carta)
             traco.deletar_carta(pos)
         
