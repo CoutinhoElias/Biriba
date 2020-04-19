@@ -1,12 +1,29 @@
 import pdb #import pdb for debugging
+import random
 class Traco:
     # Élysson MR
     def __init__(self):
         self.cartas_do_jogo = []
         self.cartas_do_jogo.extend(self._criar_baralho())
         self.cartas_do_jogo.extend(self._criar_baralho())
+        
+        self.arquivo_morto_a = []
+        self.arquivo_morto_a.extend(self._criar_arquivo_morto())
+        
+        self.arquivo_morto_b =[]
+        self.arquivo_morto_b.extend(self._criar_arquivo_morto())
 
-        print(f'Na classe Traco possui {len(self.cartas_do_jogo)} cartas')
+
+    def _criar_arquivo_morto(self):
+        list_arquivo_morto = []
+        # pdb.set_trace() #breakpoint
+
+        for i in range(15):
+            pos = self.indice_carta()          
+            list_arquivo_morto.append(self.cartas_do_jogo[pos])
+            self.deletar_carta(pos, 'Para arquivo morto', 1)         
+        return list_arquivo_morto 
+
 
     def _criar_baralho(self):
         cartas = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13]
@@ -19,13 +36,27 @@ class Traco:
 
         return list_baralho
 
-    def deletar_carta(self, pos):
-        if pos > len(self.cartas_do_jogo):
-            # pdb.set_trace() #breakpoint
-            print('**********   Esse indice não existe   **********')
+    def indice_carta(self):
+            carta = random.choice(self.cartas_do_jogo)
+            _index = self.cartas_do_jogo.index(carta)
+            return _index    
+
+    def deletar_carta(self, pos, motivo, local):
+        # Sempre que remover uma carta do baralho indique a posição (int),
+        # o motivo (int), 
+        # e o local (int):
+        #     1 = cartas_do_jogo ==> Significa queserá exluída desse atributo.
+        #     2 = arquivo_morto_a ==> Significa queserá exluída desse atributo.
+        #     3 = arquivo_morto_b ==> Significa queserá exluída desse atributo.
         if pos >= 0:
-            del(self.cartas_do_jogo[pos])
-        print(f'Removido o item da posição {pos}. Agora temos {len(self.cartas_do_jogo)} cartas.')
+            if local == 1:
+                del(self.cartas_do_jogo[pos])
+            elif local == 2:
+                del(self.arquivo_morto_a[pos])
+            else:
+                del(self.arquivo_morto_b[pos])                    
+        print(f'Removido o item da posição {pos} para {motivo}' \
+        f'. Agora temos {len(self.cartas_do_jogo)} cartas.')
 
 
 # traco = Traco()

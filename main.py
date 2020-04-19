@@ -5,32 +5,27 @@ from player import Player
 # traco = Traco()
 
 def main():
-    # Cria otraço de baralho
-    
-    # traco.deletar_carta(6)
-
-    # Cria a mão de baralho
+    # CRIA A MÃO DE BARALHO
     player1 = Player()
     player2 = Player()
     player3 = Player()
     player4 = Player()
 
+    print('O baralho inicializou com 104 cartas')
+    print('Distribuiu 60 cartas entre os jogadores')
+    print('Distribuiu 30 cartas entre os arquivos mortos')
+    print('Restam 14 cartas para iniciar o jogo')
 
-    # print('************* ',len(traco._criar_baralho()))
-    
+    # PEGA UMA CARTA PARA JOGAR
+    player1.catchCard('Puxar a carta para mão', 1)      
 
+"""
+    Usar essas mensagens onde bem desejar
 
-    #    print(F'Cartas de Gamer{j} ------------------------------------------' )
-    #    for g in sorted(jogador, key=lambda k: (k[1], int(k[0]))):
-    #        if g[1] == 'C':
-    #            print(g[0], ' de COPAS', g)
-    #        elif g[1] == 'E': 
-    #            print(g[0], ' de ESPADA', g)   
-    #        elif g[1] == 'O':
-    #            print(g[0], ' de OURO', g)   
-    #        elif g[1] == 'P':
-    #            print(g[0], ' de PAUS', g)            
-            
-
+    # print(f'Distribuído 15 cartas e restaram {len(traco.cartas_do_jogo)} na mesa')
+    # print(f'O arquivo morto 1 possui {len(traco.arquivo_morto_a)} cartas')
+    # print(f'O arquivo morto 2 possui {len(traco.arquivo_morto_b)} cartas')    
+"""
+     
 main()            
 

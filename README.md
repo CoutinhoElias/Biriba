@@ -93,5 +93,32 @@
                     O jogador escolhe umacarta de cards_in_hand para descartar, quando ele escolher 
                     removemos uma carta de cards_in_hand e adicionamos em cards_in_trash.                    
                 
-                , essa lista é sempre
-            alimentada pela lista cards_dead caso seja removida a última carta de 
+    5 - Funções:
+        Player:
+            catchCard(motivo, local):
+                Parâmetros:
+                    motivo = tipo Texto, tamanho 255, apenas para usar em mensagens.
+                    local = tipo Inteiro:
+                        1 = Para deleção de cartas do atributo cartas_do_jogo da classe Traco
+                        2 = Para deleção de cartas do atributo arquivo_morto_a da classe Traco
+                        3 = Para deleção de cartas do atributo arquivo_morto_b da classe Traco
+
+                Características:                        
+                    Quando um jogador pega a carta do baralho na mesa deve seguir estas lógicas: 
+
+                    1 - Organizar as cartas na mão. "self.sortCards()"
+                    2 - Verificar se pode contribuir com o jogo baixado na mesa.
+                    2.1 Caso verdade ele decide se deve ou não baixar essas cartas:
+                    2.1.1 SIM, ele escolhe que cartas devem ser baixadas. "FUNÇÃO NÃO MONTADA"
+                    2.1.2 NÃO, ele chama a função de descarte. "self.destarte()"
+                    3 - Verificar se deseja baixar jogo montadona mão
+                    3.1 Caso verdade ele decide se deve ou não baixar esse jogo:
+                    3.1.1 SIM, ele escolhe que cartas devem ser baixadas. "FUNÇÃO NÃO MONTADA"
+                    3.1.2 NÃO, ele chama a função de descarte. "self.destarte()"                
+
+            catchTrash(self):
+                Esta função se for executada deve remover todas as cartas do atributo "cartas_da_lixeira" e adicionar em "cards_in_hands" do jogador da vez.
+            
+            sortCards(self):
+                    Quando o jogador ordenar as cartas ele escolhe uma das que possui em mãos para descartar,
+                    assim o próximo jogador pode usar ou não a função catchTrash(self).
