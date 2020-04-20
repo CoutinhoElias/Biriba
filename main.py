@@ -2,7 +2,7 @@ import random
 from traco import Traco
 from player import Player
 
-# traco = Traco()
+traco = Traco()
 
 def main():
     # CRIA A MÃO DE BARALHO
@@ -17,15 +17,11 @@ def main():
     print('Restam 14 cartas para iniciar o jogo')
 
     # PEGA UMA CARTA PARA JOGAR
-    player1.catchCard('Puxar a carta para mão', 1)      
+    player1.catchCard(1)
 
-"""
-    Usar essas mensagens onde bem desejar
-
-    # print(f'Distribuído 15 cartas e restaram {len(traco.cartas_do_jogo)} na mesa')
-    # print(f'O arquivo morto 1 possui {len(traco.arquivo_morto_a)} cartas')
-    # print(f'O arquivo morto 2 possui {len(traco.arquivo_morto_b)} cartas')    
-"""
-     
+    print(player1.cards_in_hands[0])
+    player1.discard()
+    print(traco._lixo)
+ 
 main()            
 

@@ -13,6 +13,9 @@ class Traco:
         self.arquivo_morto_b =[]
         self.arquivo_morto_b.extend(self._criar_arquivo_morto())
 
+        self.lixo = []
+        # self.lixo.extend(self._alimentar_lixo())
+
 
     def _criar_arquivo_morto(self):
         list_arquivo_morto = []
@@ -21,9 +24,20 @@ class Traco:
         for i in range(15):
             pos = self.indice_carta()          
             list_arquivo_morto.append(self.cartas_do_jogo[pos])
-            self.deletar_carta(pos, 'Para arquivo morto', 1)         
+            self.deletar_carta(pos, 1)         
         return list_arquivo_morto 
 
+    def _lixo(self, carta):
+        # print('_lixo ', carta)
+        
+        return carta
+
+    def _alimentar_lixo(self, carta):
+        # pdb.set_trace() #breakpoint  
+        print('Lixo antes ', self._lixo)      
+        self.lixo.append(self._lixo)  
+        print('Lixo depois ', self._lixo)            
+        # return list_lixo
 
     def _criar_baralho(self):
         cartas = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13]
@@ -41,13 +55,15 @@ class Traco:
             _index = self.cartas_do_jogo.index(carta)
             return _index    
 
-    def deletar_carta(self, pos, motivo, local):
-        # Sempre que remover uma carta do baralho indique a posição (int),
-        # o motivo (int), 
-        # e o local (int):
-        #     1 = cartas_do_jogo ==> Significa queserá exluída desse atributo.
-        #     2 = arquivo_morto_a ==> Significa queserá exluída desse atributo.
-        #     3 = arquivo_morto_b ==> Significa queserá exluída desse atributo.
+    def deletar_carta(self, pos, local):
+        """
+        Params: 
+            pos = Positive integer
+            local = Positive integer
+                1 = cartas_do_jogo ==> Significa queserá exluída desse atributo.
+                2 = arquivo_morto_a ==> Significa queserá exluída desse atributo.
+                3 = arquivo_morto_b ==> Significa queserá exluída desse atributo.
+        """
         if pos >= 0:
             if local == 1:
                 del(self.cartas_do_jogo[pos])
@@ -55,8 +71,8 @@ class Traco:
                 del(self.arquivo_morto_a[pos])
             else:
                 del(self.arquivo_morto_b[pos])                    
-        print(f'Removido o item da posição {pos} para {motivo}' \
-        f'. Agora temos {len(self.cartas_do_jogo)} cartas.')
+        #print(f'Removido o item da posição {pos}' \
+        #f'. Agora temos {len(self.cartas_do_jogo)} cartas.')
 
 
 # traco = Traco()

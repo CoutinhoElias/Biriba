@@ -15,33 +15,29 @@ class Player:
         # pdb.set_trace() #breakpoint
 
         for i in range(15):
-            self.catchCard('Inicio do jogo', 1)          
+            self.catchCard(1)          
         return list_cards_in_hands 
 
-        # for g in sorted(self.cards_in_hands, key=lambda k: (k[1], int(k[0]))):
-        #     if g[1] == 'C':
-        #         print(g[0], ' de COPAS', g)
-        #     elif g[1] == 'E': 
-        #         print(g[0], ' de ESPADA', g)   
-        #     elif g[1] == 'O':
-        #         print(g[0], ' de OURO', g)   
-        #     elif g[1] == 'P':
-        #         print(g[0], ' de PAUS', g)           
+        #for g in sorted(self.cards_in_hands, key=lambda k: (k[1], int(k[0]))):
+        #    if g[1] == 'C':
+        #        print(g[0], ' de COPAS', g)
+        #    elif g[1] == 'E': 
+        #        print(g[0], ' de ESPADA', g)   
+        #    elif g[1] == 'O':
+        #        print(g[0], ' de OURO', g)   
+        #    elif g[1] == 'P':
+        #        print(g[0], ' de PAUS', g)           
 
     def checkBag(self):
         catch_trash = False
 
-    def catchCard(self, motivo, local):
+    def catchCard(self, local):
         pos = traco.indice_carta()          
         self.cards_in_hands.append(traco.cartas_do_jogo[pos])
-        traco.deletar_carta(pos, motivo, local)
+        traco.deletar_carta(pos, local)
 
 
     def catchTrash(self):
-        """
-            Esta função se for executada deve remover todas as cartas da lista "cards_in_trash" 
-            e adicionar em "cards_in_hand" do jogador da jogada atual.
-        """
         print('O jogador pegou o BAG')
         self.sortCards()
 
@@ -72,7 +68,26 @@ class Player:
         """
             Quando o jogador descartar não pode chamar a função chooseDiscard, 
             isso causa um Loop infinito.
-        """        
+            traco.deletar_carta(pos, local)
+        """     
+        pos = self.indice_carta(self.cards_in_hands[0])
+        print('Na função discard do player ', self.cards_in_hands[pos])
+        traco._alimentar_lixo(self.cards_in_hands[pos])
+        self.deletar_carta(pos)
         print('O jodador descartou.')
+
+    def indice_carta(self, pos):
+            _index = self.cards_in_hands.index(pos)
+            return _index         
+
+    def deletar_carta(self, pos):
+        """
+        Params: 
+            pos = Positive integer
+        """
+        if pos >= 0:
+            del(self.cards_in_hands[pos])                 
+        print(f'Removido o item da posição {pos}' \
+        f'. Agora temos {len(self.cards_in_hands)} cartas.')            
 
 
