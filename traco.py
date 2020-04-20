@@ -27,16 +27,12 @@ class Traco:
             self.deletar_carta(pos, 1)         
         return list_arquivo_morto 
 
-    def _lixo(self, carta):
-        # print('_lixo ', carta)
-        
-        return carta
 
-    def _alimentar_lixo(self, carta):
+    def alimentar_lixo(self, carta):
         # pdb.set_trace() #breakpoint  
-        print('Lixo antes ', self._lixo)      
-        self.lixo.append(self._lixo)  
-        print('Lixo depois ', self._lixo)            
+        # print('Lixo antes ', carta)      
+        self.lixo.append(carta)  
+        # print('Lixo depois ', carta)            
         # return list_lixo
 
     def _criar_baralho(self):

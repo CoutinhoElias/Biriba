@@ -72,7 +72,9 @@ class Player:
         """     
         pos = self.indice_carta(self.cards_in_hands[0])
         print('Na função discard do player ', self.cards_in_hands[pos])
-        traco._alimentar_lixo(self.cards_in_hands[pos])
+        excluir = self.cards_in_hands[pos]
+        
+        traco.alimentar_lixo(excluir)
         self.deletar_carta(pos)
         print('O jodador descartou.')
 
