@@ -3,18 +3,19 @@ import random
 class Traco:
     # Élysson MR
     def __init__(self):
-        self.cartas_do_jogo = []
+        self.cartas_do_jogo = [] # Lista de tuplas
         self.cartas_do_jogo.extend(self._criar_baralho())
         self.cartas_do_jogo.extend(self._criar_baralho())
         
-        self.arquivo_morto_a = []
+        self.arquivo_morto_a = [] # Lista de tuplas
         self.arquivo_morto_a.extend(self._criar_arquivo_morto())
         
-        self.arquivo_morto_b =[]
+        self.arquivo_morto_b =[] # Lista de tuplas
         self.arquivo_morto_b.extend(self._criar_arquivo_morto())
 
-        self.lixo = []
-        # self.lixo.extend(self._alimentar_lixo())
+        self.lixo = [] # Lista de tuplas
+
+        self.table = [] # Lista de listas de tuplas
 
 
     def _criar_arquivo_morto(self):
@@ -24,16 +25,14 @@ class Traco:
         for i in range(15):
             pos = self.indice_carta()          
             list_arquivo_morto.append(self.cartas_do_jogo[pos])
-            self.deletar_carta(pos, 1)         
+            self.deletar_carta(pos, 0)         
         return list_arquivo_morto 
 
 
-    def alimentar_lixo(self, carta):
-        # pdb.set_trace() #breakpoint  
-        # print('Lixo antes ', carta)      
-        self.lixo.append(carta)  
-        # print('Lixo depois ', carta)            
-        # return list_lixo
+    def alimentar_lixo(self, carta):    
+        self.lixo.append(carta) 
+        print('Na lixeira temos as cartas: ', self.lixo) 
+
 
     def _criar_baralho(self):
         cartas = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13]
@@ -56,17 +55,21 @@ class Traco:
         Params: 
             pos = Positive integer
             local = Positive integer
-                1 = cartas_do_jogo ==> Significa queserá exluída desse atributo.
-                2 = arquivo_morto_a ==> Significa queserá exluída desse atributo.
-                3 = arquivo_morto_b ==> Significa queserá exluída desse atributo.
+                0 = cartas_do_jogo ==> Significa que será exluída desse atributo.
+                1 = arquivo_morto_a ==> Significa que será exluída desse atributo.
+                2 = arquivo_morto_b ==> Significa que será exluída desse atributo.
+                3 = lixo ==> Significa que será exluída desse atributo.
         """
         if pos >= 0:
-            if local == 1:
+            if local == 0:
                 del(self.cartas_do_jogo[pos])
-            elif local == 2:
+            elif local == 1:
                 del(self.arquivo_morto_a[pos])
-            else:
-                del(self.arquivo_morto_b[pos])                    
+            elif local == 2:
+                del(self.arquivo_morto_b[pos]) 
+            elif local == 3:
+                del(self.lixo[pos])  
+
         #print(f'Removido o item da posição {pos}' \
         #f'. Agora temos {len(self.cartas_do_jogo)} cartas.')
 

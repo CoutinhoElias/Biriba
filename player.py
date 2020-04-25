@@ -1,6 +1,7 @@
 from traco import Traco
 import random
-import pdb #import pdb for debugging
+# import pdb #import pdb for debugging
+# pdb.set_trace() #breakpoint
 
 traco = Traco()
 
@@ -9,13 +10,16 @@ class Player:
         self.cards_in_hands = []
         self.cards_in_hands.extend(self._cards_in_hands())
 
-
+    # From traco.cartas_do_jogo to player.cards_in_hands
     def _cards_in_hands(self):
         list_cards_in_hands = []
-        # pdb.set_trace() #breakpoint
 
         for i in range(15):
-            self.catchCard(1)          
+            carta = random.choice(traco.cartas_do_jogo)
+            _index = traco.cartas_do_jogo.index(carta)
+
+            self.cards_in_hands.append(traco.cartas_do_jogo[_index])
+            traco.deletar_carta(_index, 0)         
         return list_cards_in_hands 
 
         #for g in sorted(self.cards_in_hands, key=lambda k: (k[1], int(k[0]))):
@@ -31,15 +35,61 @@ class Player:
     def checkBag(self):
         catch_trash = False
 
+    # From traco.arquivo_morto_? to player.cards_in_hands
+    def catchBag(self, local):
+        if len(self.cards_in_hands) == 0:
+
+            if len(traco.arquivo_morto_a) > 0:
+                print('Batido! Vou pegar o morto')
+
+                for i in range(len(traco.arquivo_morto_a)):
+                    carta = random.choice(traco.arquivo_morto_a)
+                    _index = traco.arquivo_morto_a.index(carta)
+
+                    self.cards_in_hands.append(traco.arquivo_morto_a[_index])
+                    traco.deletar_carta(_index, 1)
+
+                print(f'Agora o arquivo morto A possui {len(traco.arquivo_morto_a)} cartas')
+                print(f'Agora eu possuo {len(self.cards_in_hands)} cartas na mão')
+
+            elif len(traco.arquivo_morto_b) > 0: 
+                print('Batido! Vou pegar o morto')
+
+                for i in range(len(traco.arquivo_morto_b)):
+                    carta = random.choice(traco.arquivo_morto_b)
+                    _index = traco.arquivo_morto_b.index(carta)
+
+                    self.cards_in_hands.append(traco.arquivo_morto_b[_index])
+                    traco.deletar_carta(_index, 2)  
+
+                print(f'Agora o arquivo morto B possui {len(traco.arquivo_morto_b)} cartas')
+                print(f'Agora eu possuo {len(self.cards_in_hands)} cartas na mão')                                     
+
+        else:
+            print(f'Ainda possuo {len(self.cards_in_hands)} cartas na mão!')    
+
+
     def catchCard(self, local):
         pos = traco.indice_carta()          
         self.cards_in_hands.append(traco.cartas_do_jogo[pos])
         traco.deletar_carta(pos, local)
 
 
-    def catchTrash(self):
+    def catchTrash(self, par):
         print('O jogador pegou o BAG')
+        if par == True:         
+        
+            print('Opa! Peguei o Lixo!')
+
+            for i in range(len(traco.lixo)):
+                carta = random.choice(traco.lixo)
+                _index = traco.lixo.index(carta)
+
+                self.cards_in_hands.append(traco.lixo[_index])
+                traco.deletar_carta(_index, 3)        
+
         self.sortCards()
+
 
     def sortCards(self):
         """
@@ -48,6 +98,7 @@ class Player:
         """
         print('O jogador ordenou suas cartas.')
         self.chooseDiscard()
+
 
     def chooseDiscard(self):
         """
@@ -60,16 +111,9 @@ class Player:
         print('O jogador escolheu a carta do descarte')
         self.discard()
 
+
     def discard(self):
-        """
-            Essa função remove uma carta da lista "cards_in_hand" e adiciona esta carta 
-            na lista cards_in_trash.        
-        """
-        """
-            Quando o jogador descartar não pode chamar a função chooseDiscard, 
-            isso causa um Loop infinito.
-            traco.deletar_carta(pos, local)
-        """     
+        # pos deve ser passada por parametro aochamar a função discard no main.
         pos = self.indice_carta(self.cards_in_hands[0])
         print('Na função discard do player ', self.cards_in_hands[pos])
         excluir = self.cards_in_hands[pos]
@@ -78,9 +122,11 @@ class Player:
         self.deletar_carta(pos)
         print('O jodador descartou.')
 
+
     def indice_carta(self, pos):
             _index = self.cards_in_hands.index(pos)
             return _index         
+
 
     def deletar_carta(self, pos):
         """
@@ -91,5 +137,3 @@ class Player:
             del(self.cards_in_hands[pos])                 
         print(f'Removido o item da posição {pos}' \
         f'. Agora temos {len(self.cards_in_hands)} cartas.')            
-
-
