@@ -97,6 +97,21 @@ class Player:
             assim o próximo jogador pode usar ou não a função catchTrash().
         """
         print('O jogador ordenou suas cartas.')
+        print('Cartas na Antes', self.cards_in_hands)
+        pos = 0
+        for i in sorted(self.cards_in_hands, key=lambda k: (k[1], int(k[0]))):
+            old_pos = self.cards_in_hands.index(i)
+            # print('Old_pos antes ', old_pos)
+
+            self.cards_in_hands.insert(pos,i)
+            pos += 1
+            old_pos += 1
+            # print('Old_pos depois ', old_pos)
+
+            self.deletar_carta(old_pos)
+
+        print('Cartas na mão Depois', self.cards_in_hands)    
+
         self.chooseDiscard()
 
 
