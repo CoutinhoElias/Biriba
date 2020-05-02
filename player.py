@@ -21,16 +21,7 @@ class Player:
             self.cards_in_hands.append(traco.cartas_do_jogo[_index])
             traco.deletar_carta(_index, 0)         
         return list_cards_in_hands 
-
-        #for g in sorted(self.cards_in_hands, key=lambda k: (k[1], int(k[0]))):
-        #    if g[1] == 'C':
-        #        print(g[0], ' de COPAS', g)
-        #    elif g[1] == 'E': 
-        #        print(g[0], ' de ESPADA', g)   
-        #    elif g[1] == 'O':
-        #        print(g[0], ' de OURO', g)   
-        #    elif g[1] == 'P':
-        #        print(g[0], ' de PAUS', g)           
+         
 
     def checkBag(self):
         catch_trash = False
@@ -49,8 +40,8 @@ class Player:
                     self.cards_in_hands.append(traco.arquivo_morto_a[_index])
                     traco.deletar_carta(_index, 1)
 
-                print(f'Agora o arquivo morto A possui {len(traco.arquivo_morto_a)} cartas')
-                print(f'Agora eu possuo {len(self.cards_in_hands)} cartas na mão')
+                # print(f'Agora o arquivo morto A possui {len(traco.arquivo_morto_a)} cartas')
+                # print(f'Agora eu possuo {len(self.cards_in_hands)} cartas na mão')
 
             elif len(traco.arquivo_morto_b) > 0: 
                 print('Batido! Vou pegar o morto')
@@ -62,8 +53,8 @@ class Player:
                     self.cards_in_hands.append(traco.arquivo_morto_b[_index])
                     traco.deletar_carta(_index, 2)  
 
-                print(f'Agora o arquivo morto B possui {len(traco.arquivo_morto_b)} cartas')
-                print(f'Agora eu possuo {len(self.cards_in_hands)} cartas na mão')                                     
+                # print(f'Agora o arquivo morto B possui {len(traco.arquivo_morto_b)} cartas')
+                # print(f'Agora eu possuo {len(self.cards_in_hands)} cartas na mão')                                     
 
         else:
             print(f'Ainda possuo {len(self.cards_in_hands)} cartas na mão!')    
@@ -92,12 +83,8 @@ class Player:
 
 
     def sortCards(self):
-        """
-            Quando o jogador ordenar as cartas ele escolhe uma das que possui em mãos para descartar,
-            assim o próximo jogador pode usar ou não a função catchTrash().
-        """
         print('O jogador ordenou suas cartas.')
-        print('Cartas na Antes', self.cards_in_hands)
+        # print('Cartas na Antes', self.cards_in_hands)
         pos = 0
         for i in sorted(self.cards_in_hands, key=lambda k: (k[1], int(k[0]))):
             old_pos = self.cards_in_hands.index(i)
@@ -106,11 +93,9 @@ class Player:
             self.cards_in_hands.insert(pos,i)
             pos += 1
             old_pos += 1
-            # print('Old_pos depois ', old_pos)
-
             self.deletar_carta(old_pos)
 
-        print('Cartas na mão Depois', self.cards_in_hands)    
+        # print('Cartas na mão Depois', self.cards_in_hands)    
 
         self.chooseDiscard()
 
@@ -130,7 +115,7 @@ class Player:
     def discard(self):
         # pos deve ser passada por parametro aochamar a função discard no main.
         pos = self.indice_carta(self.cards_in_hands[0])
-        print('Na função discard do player ', self.cards_in_hands[pos])
+        # print('Na função discard do player ', self.cards_in_hands[pos])
         excluir = self.cards_in_hands[pos]
         
         traco.alimentar_lixo(excluir)
@@ -150,5 +135,11 @@ class Player:
         """
         if pos >= 0:
             del(self.cards_in_hands[pos])                 
-        print(f'Removido o item da posição {pos}' \
-        f'. Agora temos {len(self.cards_in_hands)} cartas.')            
+        """print(f'Removido o item da posição {pos}' \
+        f'. Agora temos {len(self.cards_in_hands)} cartas.')"""
+
+    def return_lixo(self):
+        print('-----------------')
+        lixeira = traco.lixo[0]
+        print(lixeira)
+        return lixeira

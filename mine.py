@@ -3,8 +3,6 @@ import random
 from traco import Traco
 from player import Player
 
-# sg.ChangeLookAndFeel('GreenTan')
-
 naipes = ['C', 'E', 'O', 'P']
 games_in_table = []
 

@@ -69,45 +69,4 @@ class Traco:
                 del(self.arquivo_morto_b[pos]) 
             elif local == 3:
                 del(self.lixo[pos])  
-
-        #print(f'Removido o item da posição {pos}' \
-        #f'. Agora temos {len(self.cartas_do_jogo)} cartas.')
-
-
-# traco = Traco()
-# traco.deletar_carta(6)
-
-#class Traco:
-#    def __init__(self, ):
-#        self.cartas = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13]
-#        self.nipes = ['C', 'E', 'O',  'P']
-#        self.gamer1 = []
-#        self.gamer2 = []
-#        self.gamer3 = []
-#        self.gamer4 = []
-#
-#
-#    def create_deck(self):
-#        self.deck = [(carta, nipe) for nipe in self.nipes for carta in self.cartas]
-#        print('Na classe Traco na função "deck" o deck está com ', len(self.deck))
-#        # self.create_card_gamer()
-#
-#    def del_card_deck(self, pos):
-#        if pos >= 0:
-#            del(self.deck[pos])
-#        print('Na classe Traco depois da função "deleta" o deck está com ', len(self.deck))
-#
-#    def create_card_gamer(self):
-#
-#        jogadores = [gamer1, gamer2, gamer3, gamer4]
-#
-#        # random.choice(baralho)
-#        # preenchendo cartas do jogador e removendo do baralho
-#        j = 0
-#        #for jogador in jogadores:
-#        #    j += 1
-#        #    for i in range(15):
-#        #        carta = random.choice(self.deck)
-#        #        pos = deck.index(carta)
-#        #        jogador.append(carta)
-#        #        del(baralho[pos])        
+   
