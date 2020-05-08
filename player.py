@@ -84,7 +84,7 @@ class Player:
 
     def sortCards(self):
         print('O jogador ordenou suas cartas.')
-        # print('Cartas na Antes', self.cards_in_hands)
+
         pos = 0
         for i in sorted(self.cards_in_hands, key=lambda k: (k[1], int(k[0]))):
             old_pos = self.cards_in_hands.index(i)
@@ -113,9 +113,12 @@ class Player:
 
 
     def discard(self):
-        # pos deve ser passada por parametro aochamar a função discard no main.
-        pos = self.indice_carta(self.cards_in_hands[0])
-        # print('Na função discard do player ', self.cards_in_hands[pos])
+        # carta meramente para escolher aleatório
+        carta = random.choice(self.cards_in_hands)
+        # pos deve ser passada por parametro ao chamar a função discard no main.
+        pos = self.indice_carta(carta)
+
+    
         excluir = self.cards_in_hands[pos]
         
         traco.alimentar_lixo(excluir)
@@ -139,7 +142,7 @@ class Player:
         f'. Agora temos {len(self.cards_in_hands)} cartas.')"""
 
     def return_lixo(self):
-        print('-----------------')
+        # print('-----------------')
         lixeira = traco.lixo[0]
-        print(lixeira)
+        # print(lixeira)
         return lixeira
