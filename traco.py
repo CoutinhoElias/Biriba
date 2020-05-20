@@ -31,7 +31,7 @@ class Traco:
 
     def alimentar_lixo(self, carta):    
         self.lixo.append(carta) 
-        print('Na lixeira temos as cartas: ', self.lixo) 
+        # print('Na lixeira temos as cartas: ', self.lixo)
 
 
     def _criar_baralho(self):
@@ -59,6 +59,7 @@ class Traco:
                 1 = arquivo_morto_a ==> Significa que será exluída desse atributo.
                 2 = arquivo_morto_b ==> Significa que será exluída desse atributo.
                 3 = lixo ==> Significa que será exluída desse atributo.
+                
         """
         if pos >= 0:
             if local == 0:

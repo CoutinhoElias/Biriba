@@ -3,6 +3,30 @@ import random
 from traco import Traco
 from player import Player
 
+import os
+path = os.path.join(os.path.dirname(os.path.realpath(__file__)), "img")
+
+naipes = ['C', 'E', 'O', 'P']
+
+all_files = os.listdir(path)
+
+images = []
+for file in all_files:
+    full_filename = os.path.join(path, file)
+    
+    if len(file) == 7:
+        reverse_file = file[2] + str(file[:2])
+        images.append({'file': reverse_file,'file_dir':full_filename})      
+    else:
+        reverse_file = file[1] + str(file[:1])
+        images.append({'file': reverse_file,'file_dir':full_filename})
+
+
+def img(pos):    
+    for i in images:
+        if pos == i['file']:
+            return i['file_dir']
+
 # sg.ChangeLookAndFeel('GreenTan')
 
 player1 = Player()
@@ -10,189 +34,242 @@ player2 = Player()
 player3 = Player()
 player4 = Player()
 
-# PEGA UMA CARTA PARA JOGAR
-# player1.catchCard(0)
 
 # Descarta uma carta da sua mão.
-player1.discard()
+# player1.discard()
 
-lixeira = player1.return_lixo()
-print('------>',lixeira)
-
-# Exclui as cartas da mão para simular a função player1.catchBag(1)
-for c in range(len(player1.cards_in_hands)):
-
-    player1.deletar_carta(0)
-"""    print('Agora temos ', len(player1.cards_in_hands))
-    if len(player1.cards_in_hands) > 0:
-        print('Excluido: ', player1.cards_in_hands[0])"""
-
-# Pega as cartas do arquivomorto a ou b.
-player1.catchBag(1)
 
 # Caso a última carta descartada pelo jogador anterior faça uma sequência
 # com algum jogo nas suas mãos, ganhamos o direito de chamar essa função (É opcional)
 player1.catchTrash(True)
 
-# print('Descartado: ',player1.cards_in_hands[0])
-# player1.discard()
-# print('Lixo: ',traco.lixo)
-# pos = player1.indice_carta(player1.cards_in_hands[6])
-
 
 # ------------------------------------------------------------------------
 # Esse código abaixo é usado meramente para ordenar as cartas na mesa
-
-games_in_table = []
-games_in_table.append(sorted([(13, 'O'), (4, 'O'), (5, 'O')]))
-games_in_table.append([(12, 'E'), (9, 'E'), (6, 'E'), (5, 'E'), (6, 'E'), (7, 'E')])
-games_in_table.append([(12, 'C'), (9, 'C'), (6, 'C')])
-games_in_table.append([(12, 'P'), (9, 'P'), (3, 'P'), (6, 'P'), (3, 'P')])
-
 pos = 0
-for i in sorted(games_in_table, key=lambda k: (k[1], k[0])):
-    old_pos = games_in_table.index(i)
-    # print('Old_pos antes ', old_pos)
-
-    games_in_table.insert(pos,sorted(i, key=lambda k: (k[1], k[0])))
+for i in sorted(player1.games_in_table, key=lambda k: (k[1], k[0])):
+    old_pos = player1.games_in_table.index(i)
+    player1.games_in_table.insert(pos,sorted(i, key=lambda k: (k[1], k[0])))
     pos += 1
     old_pos += 1
     if pos >= 0:
-        del(games_in_table[old_pos])
+        del(player1.games_in_table[old_pos])
 
 # ------------------------------------------------------------------------
 
 # sorted(games_in_table[i], key=lambda k: (k[1], int(k[0])))
 
+def choose_cards():
+    player1.choose_cards.append(event)
+
+baixar = []
+def down_game(local):
+    for i in player1.cards_in_hands[:]:
+        if i in baixar:   
+            player1.games_in_table.append(i)
+            pos = player1.indice_carta(i)
+            player1.deletar_carta(pos)
+
+
+# Deve ser chamada no clique da carta
+def vira_par(carta):
+    anterior = []
+    posterior = []
+    entre = []
+
+
+    if event[0] == 'cards_in_hands':
+        baixar.append(event[1])    
+        # print(f'O conteudo de baixar é {baixar}')
+
+        card_anterior = carta[1][0]-2, carta[1][1]
+        anterior.append(card_anterior)
+        card_anterior = carta[1][0]-1, carta[1][1]
+        anterior.append(card_anterior)
+
+        card_entre = carta[1][0]-1, carta[1][1]
+        entre.append(card_entre)
+        card_entre = carta[1][0]+1, carta[1][1]
+        entre.append(card_entre)
+
+        card_posterior = carta[1][0]+1, carta[1][1]
+        posterior.append(card_posterior)
+        card_posterior = carta[1][0]+2, carta[1][1]
+        posterior.append(card_posterior)
+
+    #Representação das lists comprehensions abaixo
+    #for x in anterior:
+    #    if x in baixar:
+    #        print(x)
+
+
+    #print(f'O conteudo de anteior é {anterior}')
+    if len([x for x in anterior if x in baixar]) >= 2:
+        print(f'Deu certo! {event[1]} Formou jogo com: ', [x for x in anterior if x in baixar])
+        window.Element('Baixar jogo').Update(visible=True)
+        window.FindElement('Baixar jogo').Update(button_color=('black', 'yellow'))
+        window.Element('_JOGOS NA MESA_').Update(visible=True)
+
+
+    #print(f'O conteudo de entre é {entre}')
+    if len([x for x in entre if x in baixar]) >= 2:
+        print(f'Deu certo! {event[1]} Formou jogo com: ', [x for x in entre if x in baixar])
+        window.Element('Baixar jogo').Update(visible=True)
+        window.FindElement('Baixar jogo').Update(button_color=('black', 'yellow'))
+        window.Element('_JOGOS NA MESA_').Update(visible=True)
+
+
+    #print(f'O conteudo de posterior é {posterior}')
+    if len([x for x in posterior if x in baixar]) >= 2:
+        print(f'Deu certo! {event[1]} Formou jogo com: :', [x for x in posterior if x in baixar])
+        window.Element('Baixar jogo').Update(visible=True)
+        window.FindElement('Baixar jogo').Update(button_color=('black', 'yellow'))
+        window.Element('_JOGOS NA MESA_').Update(visible=True)
 
 
 
+def new_lay():
+        # Deve verificar se a origem for maior que zero.
+        # Verifique os parametros da função
+        """
+        Params: 
+            pos = Positive integer
+            local = Positive integer
+                0 = cartas_do_jogo ==> Significa que será exluída desse atributo.
+                1 = arquivo_morto_a ==> Significa que será exluída desse atributo.
+                2 = arquivo_morto_b ==> Significa que será exluída desse atributo.
+                3 = lixo ==> Significa que será exluída desse atributo.
+        """
 
-MAX_ROWS = len(games_in_table)
+        col = []
 
-C1 = '/home/elias/Downloads/Python/Scripts/Biriba/img/1C.png'
-C2 = '/home/elias/Downloads/Python/Scripts/Biriba/img/2C.png'
-C3 = '/home/elias/Downloads/Python/Scripts/Biriba/img/3C.png'
-C4 = '/home/elias/Downloads/Python/Scripts/Biriba/img/4C.png'
-C5 = '/home/elias/Downloads/Python/Scripts/Biriba/img/5C.png'
-C6 = '/home/elias/Downloads/Python/Scripts/Biriba/img/6C.png'
-C7 = '/home/elias/Downloads/Python/Scripts/Biriba/img/7C.png'
-C8 = '/home/elias/Downloads/Python/Scripts/Biriba/img/8C.png'
-C9 = '/home/elias/Downloads/Python/Scripts/Biriba/img/9C.png'
-C10 = '/home/elias/Downloads/Python/Scripts/Biriba/img/10C.png'
-C11 = '/home/elias/Downloads/Python/Scripts/Biriba/img/11C.png'
-C12 = '/home/elias/Downloads/Python/Scripts/Biriba/img/12C.png'
-C13 = '/home/elias/Downloads/Python/Scripts/Biriba/img/13C.png'
+        col.append([sg.Text('Cartas marcadas', font='Helvetica 10 bold'), sg.Text('', key='_CARTAS MARCADAS_2')])
+        col.append([sg.Text(size=(50, 2), font=('Helvetica', 20), justification='center', key='_CARTAS NA MESA_')],)
+        col.append([sg.Text('---------------------------------------------------- JOGOS NA MESA ----------------------------------------------------', visible=False, font='Helvetica 10 bold'), sg.Text('', key='_JOGOS NA MESA_')],)
+        wid = []
+        for i in range(len(sorted(player1.games_in_table))):
+            # print(player1.games_in_table[i][1], player1.games_in_table[i][0])
+            search =  str(player1.games_in_table[i][1]) + str(player1.games_in_table[i][0])
+            wid.append(sg.Button('', button_color=('white', 'green'), image_filename=img(search), image_size=(100, 130), image_subsample=3, key=player1.games_in_table[i], size=(4, 2), pad=(0,0)),)            
 
+        col.append(wid)
 
-E1 = '/home/elias/Downloads/Python/Scripts/Biriba/img/1E.png'
-E2 = '/home/elias/Downloads/Python/Scripts/Biriba/img/2E.png'
-E3 = '/home/elias/Downloads/Python/Scripts/Biriba/img/3E.png'
-E4 = '/home/elias/Downloads/Python/Scripts/Biriba/img/4E.png'
-E5 = '/home/elias/Downloads/Python/Scripts/Biriba/img/5E.png'
-E6 = '/home/elias/Downloads/Python/Scripts/Biriba/img/6E.png'
-E7 = '/home/elias/Downloads/Python/Scripts/Biriba/img/7E.png'
-E8 = '/home/elias/Downloads/Python/Scripts/Biriba/img/8E.png'
-E9 = '/home/elias/Downloads/Python/Scripts/Biriba/img/9E.png'
-E11 = '/home/elias/Downloads/Python/Scripts/Biriba/img/11E.png'
-E10 = '/home/elias/Downloads/Python/Scripts/Biriba/img/10E.png'
-E12 = '/home/elias/Downloads/Python/Scripts/Biriba/img/12E.png'
-E13 = '/home/elias/Downloads/Python/Scripts/Biriba/img/13E.png'
+        # col += [[sg.Button(games_in_table[i][j], size=(4, 2), key=(i,j), pad=(0,0)) for j in range(len(games_in_table[i]))] for i in range(MAX_ROWS)]
 
+        col.append([sg.Text('---------------------------------------------------- CARTAS NA MÃO ----------------------------------------------------', font='Helvetica 10 bold'), sg.Text('', key='_OUTPUT_')],)        
 
-O1 = '/home/elias/Downloads/Python/Scripts/Biriba/img/1O.png'
-O2 = '/home/elias/Downloads/Python/Scripts/Biriba/img/2O.png'
-O3 = '/home/elias/Downloads/Python/Scripts/Biriba/img/3O.png'
-O4 = '/home/elias/Downloads/Python/Scripts/Biriba/img/4O.png'
-O5 = '/home/elias/Downloads/Python/Scripts/Biriba/img/5O.png'
-O6 = '/home/elias/Downloads/Python/Scripts/Biriba/img/6O.png'
-O7 = '/home/elias/Downloads/Python/Scripts/Biriba/img/7O.png'
-O8 = '/home/elias/Downloads/Python/Scripts/Biriba/img/8O.png'
-O9 = '/home/elias/Downloads/Python/Scripts/Biriba/img/9O.png'
-O11 = '/home/elias/Downloads/Python/Scripts/Biriba/img/11O.png'
-O10 = '/home/elias/Downloads/Python/Scripts/Biriba/img/10O.png'
-O12 = '/home/elias/Downloads/Python/Scripts/Biriba/img/12O.png'
-O13 = '/home/elias/Downloads/Python/Scripts/Biriba/img/13O.png'
-
-
-P1 = '/home/elias/Downloads/Python/Scripts/Biriba/img/1P.png'
-P2 = '/home/elias/Downloads/Python/Scripts/Biriba/img/2P.png'
-P3 = '/home/elias/Downloads/Python/Scripts/Biriba/img/3P.png'
-P4 = '/home/elias/Downloads/Python/Scripts/Biriba/img/4P.png'
-P5 = '/home/elias/Downloads/Python/Scripts/Biriba/img/5P.png'
-P6 = '/home/elias/Downloads/Python/Scripts/Biriba/img/6P.png'
-P7 = '/home/elias/Downloads/Python/Scripts/Biriba/img/7P.png'
-P8 = '/home/elias/Downloads/Python/Scripts/Biriba/img/8P.png'
-P9 = '/home/elias/Downloads/Python/Scripts/Biriba/img/9P.png'
-P11 = '/home/elias/Downloads/Python/Scripts/Biriba/img/11P.png'
-P10 = '/home/elias/Downloads/Python/Scripts/Biriba/img/10P.png'
-P12 = '/home/elias/Downloads/Python/Scripts/Biriba/img/12P.png'
-P13 = '/home/elias/Downloads/Python/Scripts/Biriba/img/13P.png'
-
-
-layout = [[sg.Text('---------------------------------------------------- CARTAS NO LIXO ----------------------------------------------------'), sg.Text('', key='_OUTPUT_')],]
-
-image_file = f'/home/elias/Downloads/Python/Scripts/Biriba/img/{str(player1.return_lixo()[0]) + str(player1.return_lixo()[1])}.png'
-
-layout += [[sg.Button('', image_filename=image_file, image_size=(25, 40), image_subsample=3, key='Next', size=(4, 2), pad=(0,0)),]]        
-
-layout.append([sg.Text('---------------------------------------------------- JOGOS NA MESA ----------------------------------------------------'), sg.Text('', key='_OUTPUT_')],)        
-for i in range(len(sorted(games_in_table))):
-    wid = []
-    
-    for j in range(len(sorted(games_in_table[i], key=lambda k: (k[1], int(k[0]))))):
-        image_file = f'/home/elias/Downloads/Python/Scripts/Biriba/img/{str(games_in_table[i][j][0]) + str(games_in_table[i][j][1])}.png'
-        # wid.append(sg.Button('', image_filename=image_file, image_size=(25, 40), image_subsample=3, key=(f'({i}, {j})'), size=(4, 2), pad=(0,0)),)
-        wid.append(sg.Button(games_in_table[i][j], key=(f'({i}, {j})'), size=(4, 2), pad=(0,0)),)
-        # wid.append(sg.Button('', image_filename=image_file, image_size=(25, 40), image_subsample=3, key='Next', size=(4, 2), pad=(0,0)),)
-    layout.append(wid)
-
-# layout += [[sg.Button(games_in_table[i][j], size=(4, 2), key=(i,j), pad=(0,0)) for j in range(len(games_in_table[i]))] for i in range(MAX_ROWS)]
-
-"""layout += [
-            [sg.Text('---------------------------------------------------- CARTAS NA MÃO ----------------------------------------------------'), sg.Text('', key='_OUTPUT_')],
-            [sg.Button(player1.cards_in_hands[i], size=(4, 2), pad=(0,0)) for i in range(len(player1.cards_in_hands)) if player1.cards_in_hands[i][1] == 'C'],
-            [sg.Button(player1.cards_in_hands[i], size=(4, 2), pad=(0,0)) for i in range(len(player1.cards_in_hands)) if player1.cards_in_hands[i][1] == 'E'],
-            [sg.Button(player1.cards_in_hands[i], size=(4, 2), pad=(0,0)) for i in range(len(player1.cards_in_hands)) if player1.cards_in_hands[i][1] == 'O'],
-            [sg.Button(player1.cards_in_hands[i], size=(4, 2), pad=(0,0)) for i in range(len(player1.cards_in_hands)) if player1.cards_in_hands[i][1] == 'P'],
+        for naipe in naipes:
+            wid = []
+            grupo_naipe = []
+            for i in range(len(player1.cards_in_hands)):
+                if naipe == player1.cards_in_hands[i][1]:
+                    grupo_naipe.append(player1.cards_in_hands[i])
             
-            
-]"""
+            for grupo in sorted(grupo_naipe):
+                search = str(grupo[1]) + str(grupo[0])
+                wid.append(sg.Button('', image_filename=img(search), image_size=(100, 130), image_subsample=3, key=('cards_in_hands', grupo), size=(4, 2), pad=(0,0)),)                   
+            col.append(wid)
 
-layout.append([sg.Text('---------------------------------------------------- CARTAS NA MÃO ----------------------------------------------------'), sg.Text('', key='_OUTPUT_')],)        
-
-wid = []
-for i in range(len(player1.cards_in_hands)):
-    image_file = f'/home/elias/Downloads/Python/Scripts/Biriba/img/{str(player1.cards_in_hands[i][0]) + str(player1.cards_in_hands[i][1])}.png'
-    wid.append(sg.Button('', image_filename=image_file, image_size=(25, 40), image_subsample=3, key=(f'({i}, {j})'), size=(4, 2), pad=(0,0)),)
-    # wid.append(sg.Button('', image_filename=image_file, image_size=(25, 40), image_subsample=3, key='Next', size=(4, 2), pad=(0,0)),)
-
-layout.append(wid)
+        # col.append([sg.Button('', image_filename=img('X15'), image_size=(100, 130), size=(10, 20), key=('add'), pad=(0,0))])
+        if len(player1.return_lixo()) > 0:
+            search = str(player1.return_lixo()[1]) + str(player1.return_lixo()[0])
+        else:    
+            search = None
 
 
+        col2 = [[sg.Text('Funções e placar.', font='Helvetica 10 bold')],      
+                [sg.Button('Puxar carta', size=(10, 3), font='Helvetica 10 bold')], 
+                [sg.Button('Descartar', size=(10, 3), font='Helvetica 10 bold')], 
+                [sg.Button('Baixar jogo', size=(10, 3), visible=False, font='Helvetica 10 bold')],
+                [sg.Button('Pegar Morto', size=(10, 3), font='Helvetica 10 bold')],
+                [sg.Button('Bater', size=(10, 3), font='Helvetica 10 bold')], 
+                [sg.Button('Sair', size=(10, 3), font='Helvetica 10 bold')],
+                [sg.Text('Cartas no Lixo', font='Helvetica 10 bold'), sg.Text('', key='_CARTAS NO LIXO_')],
+                [sg.Button('', image_filename=img(search), 
+                               image_size=(100, 130), 
+                               image_subsample=3, 
+                               key=player1.return_lixo(), 
+                               size=(4, 2), pad=(0,0)),]]
+        
+        layout = [[
+            sg.Column( col2, element_justification='Center' ), 
+            sg.Column( col, size=(1100,900), scrollable=True, element_justification='Center' )
+        ]]
 
-"""
-# NÃO EXCLUIR DE FORMA ALGUMA
 
+        return layout
 
-layout.append([sg.Text('---------------------------------------------------- USANDO O FOR ----------------------------------------------------'), sg.Text('', key='_OUTPUT_')],)        
-for i in range(len(games_in_table)):
-    wid = []
-    for j in range(len(games_in_table[i])):
-        image_file = f'/home/elias/Downloads/Python/Scripts/Biriba/img/{str(games_in_table[i][j][0]) + str(games_in_table[i][j][1])}.png'
-        wid.append(sg.Button('', image_filename=image_file, image_size=(25, 40), image_subsample=3, key=(f'({i}, {j})'), size=(4, 2), pad=(0,0)),)
-        # wid.append(sg.Button('', image_filename=image_file, image_size=(25, 40), image_subsample=3, key='Next', size=(4, 2), pad=(0,0)),)
-    layout.append(wid)
-"""
+window = sg.Window('Jogando Biriba.', new_lay()).Finalize()
+window.Maximize()
 
-window = sg.Window('Jogando Biriba.', layout, size=(1165,600))
+show_cards = False
 
 while True:
     event, values = window.read()
-    print(event)
+
+
     if event in (None, 'Exit'):
         break
+
+   
+
+    if event == 'Puxar carta':
+        # Remove uma carta da mão e adiciona no lixo 
+        player1.catchCard(0)
+        
+        window.Close()
+        window = sg.Window('Jogando Biriba. Você descartou!', new_lay()).Finalize()
+
+    if event == 'Descartar':
+        # Remove uma carta da mão e adiciona no lixo 
+        player1.discard()
+        
+        window.Close()
+        window = sg.Window('Jogando Biriba. Você descartou!', new_lay()).Finalize()
+    elif event == 'Pegar Morto':
+        player1.catchBag(1)
+
+        window.Close()
+        window = sg.Window('Jogando Biriba. Você descartou!', new_lay()).Finalize() 
+
+
+    elif event == 'Baixar jogo':
+        down_game(1)
+        window.Element('Baixar jogo').Update(visible=False)
+        
+        if len(player1.games_in_table)<=0:
+            print('Sem nenhuma carta')
+        else:
+            print(f'Possui {len(player1.games_in_table)} cartas')
+            show_cards = True        
+
+        window.Close()
+        window = sg.Window('Jogando Biriba. Você baixou jogo na mesa', new_lay()).Finalize()
+
+
+    # Verifico se a lista games_in_table possui cartas, se positivo altero o conteúdo do sg.Text com
+    # o event =  _CARTAS NA MESA_
+    if show_cards:
+        window['_CARTAS NA MESA_'].update(f'Ahhhhh baitola que tem  {len(player1.games_in_table)} cartas na mesa!') 
+
+
+    elif event[0] == 1:
+        try:
+            card = int(event[0])
+            choose_cards()
+        except ValueError:
+            print("Não é número")
+
+
+    if event[0] == 'cards_in_hands':
+        window.FindElement('Baixar jogo').Update(button_color=('black', 'yellow'))
+        vira_par(event)
+
+
+    elif event == 'Sair':
+        window.Close()       
+
     # window[(row, col)].update('New text')   # To change a button's text, use this pattern
     # For this example, change the text of the button to the board's value and turn color black
-    #window[event].update(board[event[0]][event[1]], button_color=('white','black'))
+    # window[event].update(board[event[0]][event[1]], button_color=('white','black'))
 window.close()
